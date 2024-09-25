@@ -1,5 +1,3 @@
-Here's the updated `README.md` with the revised instructions for running tests:
-
 ---
 
 # Restful-Booker API Automation Framework
@@ -16,26 +14,32 @@ src
 │       └── endpoints
 │           ├── BookingEndpoints.java
 │           └── Routes.java
-│       └── payloads
-│           ├── Booking.java
-│           ├── Credentials.java
-│           └── ResponseData.java
-│       └── utils
-│           ├── ConfigLogger.java
-│           ├── ConfigProperties.java
-│           ├── EncryptionUtil.java
-│           └── EncryptCredentials.java
-│   └── resources
-│       ├── config.properties
-│       └── log4j2.xml
+│       └── resources
+│           ├── config.properties
+│           └── secretKey.properties
 └── test
     └── java
-        └── tests
-            ├── CreateBookingTest.java
-            ├── GetBookingTest.java
-            ├── UpdateBookingTest.java
-            ├── PatchBookingTest.java
-            └── DeleteBookingTest.java
+        └── com.restful_booker.api
+            ├── endpoints
+            │   ├── BookingEndpoints.java
+            │   └── Routes.java
+            ├── payloads
+            │   ├── Booking.java
+            │   ├── BookingDates.java
+            │   ├── Credentials.java
+            │   └── ResponseData.java
+            ├── tests
+            │   └── BookingTest.java
+            └── utils
+                ├── ConfigLogger.java
+                ├── ConfigProperties.java
+                ├── EncryptCredentials.java
+                ├── EncryptionUtil.java
+                ├── ReadSecretKey.java
+                ├── TestBase.java
+                └── WriteToFile.java
+    └── resources
+        └── log4j2.xml
 ```
 
 ## Features
@@ -46,20 +50,21 @@ src
 
 - **Payloads**: 
   - `Booking.java`: POJO for booking details, with getters and setters.
+  - `BookingDates.java`: POJO for booking dates (check-in and check-out).
   - `Credentials.java`: POJO for username and password.
   - `ResponseData.java`: Stores dynamic values like `bookingId` and `token` for use during execution.
 
 - **Utilities**:
   - `ConfigLogger.java`: Sets up logging using Log4j2 (`log4j2.xml`).
   - `ConfigProperties.java`: Loads and reads from `config.properties`.
-  - `EncryptionUtil.java`: Generates AES key and contains methods for encryption and decryption.
   - `EncryptCredentials.java`: Encrypts credentials (username and password) and writes the secret key to `secretKey.properties`.
-
-- **Test Base**:
-  - `TestBase.java`: Initializes payloads, endpoints, and test data using `Booking`, `BookingEndpoints`, `Faker`, `CredentialsPayload`, and `ResponseData`.
+  - `EncryptionUtil.java`: Generates AES key and contains methods for encryption and decryption.
+  - `ReadSecretKey.java`: Reads the AES key from the `secretKey.properties` file.
+  - `TestBase.java`: Initializes payloads, endpoints, and test data using `Booking`, `BookingEndpoints`, `Faker`, `Credentials`, and `ResponseData`.
+  - `WriteToFile.java`: Utility for file operations, like writing data to files.
 
 - **Tests**: 
-  - Contains CRUD operation tests including creating a token, creating, retrieving, updating, patching, and deleting a booking.
+  - `BookingTest.java`: Contains CRUD operation tests, including creating a token, creating, retrieving, updating, and deleting a booking.
 
 ## Configuration
 
@@ -113,5 +118,3 @@ Tests cover:
 The framework uses Log4j2 for logging. Configuration is handled through `log4j2.xml`. Logs will be generated during test execution.
 
 ---
-
-Let me know if you need any further modifications!
