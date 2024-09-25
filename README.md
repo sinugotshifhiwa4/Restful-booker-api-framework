@@ -1,4 +1,4 @@
-Based on the updated project structure visible in your screenshot, I will make the necessary adjustments to the `README.md` file. Here’s the updated version:
+Restful-Booker API Automation Framework
 
 ---
 
@@ -121,4 +121,4 @@ The framework uses Log4j2 for logging. Configuration is handled through `log4j2.
 
 ---
 
-Let me know if you need any further adjustments!
+@ Tshifhiwa Sinugo!
