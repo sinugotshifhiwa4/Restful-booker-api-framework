@@ -1,105 +1,117 @@
-Got it! I'll update the `README.md` to include the correct command for running tests with the `uat` profile and environment.
+Here's the updated `README.md` with the revised instructions for running tests:
 
-Here's the updated `README.md`:
+---
 
-```markdown
 # Restful-Booker API Automation Framework
 
-This project is an automation framework for testing the Restful-Booker API. It uses Java, RestAssured, and other dependencies to perform CRUD operations and validate the API responses.
+This is an API Automation Framework for testing the Restful-Booker API. The framework is built using **Java**, **RestAssured**, and **AES encryption** for secure credential management. It includes configuration management, payload handling, logging, encryption, and CRUD test automation.
 
 ## Project Structure
 
-- **src/main/resources**
-  - `config.properties`: Contains `base_url`, `username`, and `password`.
-  - `secretKey.properties`: Generated when you run the encryption class.
+```
+src
+│
+├── main
+│   └── java
+│       └── endpoints
+│           ├── BookingEndpoints.java
+│           └── Routes.java
+│       └── payloads
+│           ├── Booking.java
+│           ├── Credentials.java
+│           └── ResponseData.java
+│       └── utils
+│           ├── ConfigLogger.java
+│           ├── ConfigProperties.java
+│           ├── EncryptionUtil.java
+│           └── EncryptCredentials.java
+│   └── resources
+│       ├── config.properties
+│       └── log4j2.xml
+└── test
+    └── java
+        └── tests
+            ├── CreateBookingTest.java
+            ├── GetBookingTest.java
+            ├── UpdateBookingTest.java
+            ├── PatchBookingTest.java
+            └── DeleteBookingTest.java
+```
 
-- **src/main/java/com/restful_booker/api**
-  - **endpoints**
-    - `Routes.java`: Contains all URLs.
-    - `Endpoints.java`: Contains all CRUD endpoints that return responses.
-  - **payloads**
-    - `Booking.java`: POJO with setters and getters for booking data.
-    - `Credentials.java`: POJO for username and password.
-    - `ResponseData.java`: Stores `bookingId` and `token` during execution.
-  - **tests**
-    - Contains all test classes with CRUD operations.
-  - **utils**
-    - `ConfigLogger.java`: Logger class with `log4j2.xml` for logging.
-    - `ConfigProperties.java`: Loads and reads properties files.
-    - `EncryptionUtil.java`: Generates AES key and contains encrypt/decrypt methods.
-    - `EncryptCredentials.java`: Encrypts data.
-    - `ReadSecretKey.java`: Reads the secret key.
-    - `WriteToFile.java`: Writes the secret key to a file.
-    - `TestBase.java`: Initializes test data and runs before tests.
+## Features
 
-## Setup
+- **Endpoints**: 
+  - `Routes.java`: Contains all API endpoint URLs.
+  - `BookingEndpoints.java`: Implements all CRUD operations (create, retrieve, update, delete) and returns `Response` objects.
 
-1. **Create `config.properties`**:
-   - Under `src/main/resources`, create a file named `config.properties` with the following content:
-     ```properties
-     base_url=<your_base_url>
-     username=<your_username>
-     password=<your_password>
-     ```
+- **Payloads**: 
+  - `Booking.java`: POJO for booking details, with getters and setters.
+  - `Credentials.java`: POJO for username and password.
+  - `ResponseData.java`: Stores dynamic values like `bookingId` and `token` for use during execution.
 
-2. **Encrypt Credentials**:
-   - Run the `EncryptCredentials` class to encrypt the credentials. Ensure all variables to encrypt are included in the class.
-   - This will generate `secretKey.properties` under the same location.
+- **Utilities**:
+  - `ConfigLogger.java`: Sets up logging using Log4j2 (`log4j2.xml`).
+  - `ConfigProperties.java`: Loads and reads from `config.properties`.
+  - `EncryptionUtil.java`: Generates AES key and contains methods for encryption and decryption.
+  - `EncryptCredentials.java`: Encrypts credentials (username and password) and writes the secret key to `secretKey.properties`.
+
+- **Test Base**:
+  - `TestBase.java`: Initializes payloads, endpoints, and test data using `Booking`, `BookingEndpoints`, `Faker`, `CredentialsPayload`, and `ResponseData`.
+
+- **Tests**: 
+  - Contains CRUD operation tests including creating a token, creating, retrieving, updating, patching, and deleting a booking.
+
+## Configuration
+
+### 1. `config.properties`
+You need to create a `config.properties` file under `src/main/resources/` with the following keys:
+- `base_url`
+- `username`
+- `password`
+
+### 2. Encrypting Credentials
+Run the `EncryptCredentials` class to encrypt the `username` and `password`. This will generate the `secretKey.properties` file, which is necessary for decryption during execution.
+
+**Steps**:
+1. Ensure all credentials are initialized in `config.properties`.
+2. Run the `EncryptCredentials` class to encrypt credentials and generate `secretKey.properties`.
+
+### 3. `secretKey.properties`
+This file is auto-generated when the encryption process is completed. It contains the AES encryption key used to encrypt and decrypt sensitive information.
 
 ## Dependencies
 
-- **Java**
-- **RestAssured**
-- **Maven Surefire Plugin**
-- **Other RestAssured dependencies**
+- **RestAssured**: For REST API testing.
+- **JUnit/TestNG**: Test framework for test execution.
+- **Surefire Plugin**: For test execution during the build process.
+- **Maven**: For project management and dependency handling.
 
-## Profiles
+### Maven Profiles
 
-- **uat**: To run tests with the `uat` profile, use the following command:
-  ```sh
-  mvn clean test -Puat -DEnvironment=uat
-  ```
+The project includes a profile for running tests with the `mvn clean test` command. 
+
+## How to Run Tests
+
+1. Clone the repository.
+2. Create the necessary configuration files (`config.properties`).
+3. Encrypt your credentials by running the `EncryptCredentials` class.
+4. Run tests using the command:
+   ```bash
+   mvn clean test -Puat -DEnvironment=uat
+   ```
+
+Tests cover:
+- Token creation
+- Booking creation
+- Get booking by ID
+- Update booking by ID
+- Patch booking by ID
+- Delete booking by ID
 
 ## Logging
 
-- **log4j2.xml**: Located in `src/main/resources` for logging configuration.
+The framework uses Log4j2 for logging. Configuration is handled through `log4j2.xml`. Logs will be generated during test execution.
 
-## Tests
+---
 
-- **Field-Level Initialization**: Better for parallel tests.
-- **CRUD Tests**:
-  - Create token
-  - Create booking
-  - Get booking by ID
-  - Update booking by ID
-  - Patch booking by ID
-  - Delete booking by ID
-
-## Example Initialization in `TestBase` Class
-
-```java
-protected Booking bookingPayload;
-protected BookingEndpoints bookingEndpoints;
-protected Faker faker;
-protected Credentials credentialsPayload;
-// protected ResponseData responseData;
-protected static final Logger logger = ConfigLogger.getLogger();
-```
-
-## Running Tests
-
-To run the tests, use the following Maven command:
-```sh
-mvn clean test -Puat -DEnvironment=uat
-```
-
-## Contributing
-
-Feel free to fork this repository and contribute by submitting pull requests. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the MIT License.
-```
-
-This should now include the correct command for running tests with the `uat` profile and environment. If you need any further adjustments or additional information, feel free to let me know!
+Let me know if you need any further modifications!
